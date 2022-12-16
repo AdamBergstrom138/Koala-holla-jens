@@ -30,8 +30,51 @@ function setupClickListeners() {
 function getKoalas(){
   console.log( 'in getKoalas' );
   // ajax call to server to get koalas
-  
+  $.ajax({
+     type: 'GET',
+     url: '/koalas'
+    }).then(function(response) {
+      // empty then build
+      console.log(response);
+      for(let koala of response){
+        $('#viewKoalas').append(`
+        <tr>
+          <td>${koala.name}</td>
+          <td>${koala.age}</td>
+          <td>${koala.gender}</td>
+          <td>${koala.ready_to_transfer}</td>
+          <td>${koala.notes}</td>
+          <td>''</td>
+          <td>''</td>
+        </tr>
+        `);
+      }
+    }).catch(function(error){
+      console.log('error in GET', error);
+    });
 } // end getKoalas
+
+// $.ajax({
+//   type: 'GET',
+//   url: '/books'
+// }).then(function(response) {
+//   // Then, render the books!
+//   $('#bookShelf').empty();
+
+//   for (let book of response) {
+//     $('#bookShelf').append(`
+//       <tr>
+//         <td>${book.title}</td>
+//         <td>${book.author}</td>
+//         <td><button data-id=${book.id} class="deleteBookButton">Delete Book</button></td>
+//       </tr>
+//   `);
+//   }
+// }).catch(function(error){
+//   console.log('error in GET', error);
+// });
+
+
 
 function saveKoala( newKoala ){
   console.log( 'in saveKoala', newKoala );
