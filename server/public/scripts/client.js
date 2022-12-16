@@ -9,6 +9,7 @@ $( document ).ready( function(){
   getKoalas();
   // delete
   $('body').on('click', '.deleteButton', deleteKoala);
+  $('body').on('click', '.transferButton', transferKoala);
 
 }); // end doc ready
 
@@ -51,16 +52,35 @@ function getKoalas(){
           <td>${koala.gender}</td>
           <td>${koala.ready_to_transfer}</td>
           <td>${koala.notes}</td>
-          <td>''</td>
+          <td class="ready${koala.id}">Ready</td>
           <td><button type="button" class="deleteButton">Delete</button></td>
         </tr>
         `);
+        if (koala.ready_to_transfer === 'N'){
+          $(`.ready${koala.id}`).empty();
+          $(`.ready${koala.id}`).append('<td><button type="button" class="transferButton">Ready</button></td>');
+        }
       }
     }).catch(function(error){
       console.log('error in GET', error);
     });
 } // end getKoalas
-
+function transferKoala(){
+  console.log('in transferKoala');
+  let idToUpdate = $(this).parent().parent().parent().data().id;
+  console.log(idToUpdate);
+  $.ajax({
+    method: 'PUT',
+    url: `/koalas/${idToUpdate}`,
+    data: {
+      ready_to_transfer: 'Y'
+    }
+  }).then((response) => {
+    getKoalas();
+  }).catch((error) => {
+    console.log('something broke in transferKoala():', error);
+  })
+}
 
 
 function saveKoala( newKoala ){

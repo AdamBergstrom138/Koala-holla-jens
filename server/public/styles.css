@@ -2,3 +2,13 @@ td, tr, table {
 border: 1px solid;
 border-collapse: collapse;
 }
+
+.icon {
+    max-width: 10%;
+    border: 1px solid;
+    border-radius: 50%;
+}
+
+body {
+    background-color: coral;
+}

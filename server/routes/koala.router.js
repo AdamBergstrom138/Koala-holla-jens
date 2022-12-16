@@ -42,7 +42,28 @@ koalaRouter.post('/',(req, res) => {
 
 // PUT
 
+koalaRouter.put('/:id', (req, res) => {
+  console.log('req.params:', req.params);
+  console.log('req.body:', req.body);
+  let idToUpdate = req.params.id;
+  let newStatus = req.body.ready_to_transfer;
 
+  let sqlQuery = `
+    UPDATE "koala"
+	    SET "ready_to_transfer"=$1
+	    WHERE "id"=$2;
+  ` 
+  let sqlValues = [newStatus, idToUpdate];
+
+  pool.query(sqlQuery, sqlValues)
+    .then((dbRes) => {
+      res.sendStatus(200);
+    })
+    .catch((dbErr) => {
+      console.log('something broke in PUT', dbErr);
+      res.sendStatus(500);
+    })
+})
 // DELETE
 koalaRouter.delete('/:id', (req, res) => {
   console.log(req.params);
